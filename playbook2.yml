@@ -1,0 +1,14 @@
+- name: "Testing set_facts and register variable"
+  hosts: all
+  remote_user: root
+  become: 'yes'
+  become_user: root
+  
+  tasks:
+    - name: "Retrieve installed python version"
+      shell: "python3  --version"
+      register: python_version
+
+    
+    - name: "show value"
+      debug: var=python_version.stdout_lines[0].split()[1]

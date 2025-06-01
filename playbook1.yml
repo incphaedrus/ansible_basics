@@ -1,0 +1,25 @@
+---
+  - name: Playbook
+    hosts: all
+    become: 'yes'
+    become_user: root
+    tasks: 
+      - name: "check connectivity"
+        ping:
+
+      - name: "ensure apache is installed"
+        yum: 
+          name: httpd
+          state: latest
+
+      - name: "Esnure running"
+        service:
+          name: httpd
+          state: started
+
+      - name: "debug message"
+        debug:
+          msg: "this is a custom message from the playbook {{ ansible_facts.ansible_local.create_facts.GIT_VERSION }}"
+
+
+
