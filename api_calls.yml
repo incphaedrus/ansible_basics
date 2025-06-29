@@ -1,0 +1,22 @@
+---
+- name:  API calls using ansible
+  hosts:  all
+  become: false
+  vars:
+    server: "https://reqres.in/api/users?/page=2"
+
+  tasks:
+    - name: list users
+      ansible.builtin.uri:
+        url: "{{ server }}"
+        method: GET
+        status_code: 200
+        timeout: 30
+        headers:
+          x-api-key: "reqres-free-v1"
+      register: result
+
+
+    - name: show results
+      ansible.builtin.debug:
+        var: result.json.data[0].email
