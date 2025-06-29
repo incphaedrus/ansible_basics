@@ -1,0 +1,21 @@
+---
+- name: select network attributes which are on
+  hosts:  all
+  gather_facts: true
+  tasks:
+    - name: all features
+      ansible.builtin.debug:
+        var: 'ansible_facts.eth1.features'
+
+
+    - name: show only enabled
+      ansible.builtin.debug:
+        msg: "{{ (ansible_facts.eth1.features | dict2items | selectattr('value', 'match', 'on') ) }}"
+
+    - name: show time
+      ansible.builtin.debug:
+        var: ansible_data_time
+
+    - name: ISO8601
+      ansible.builtin.debug:
+        var: ansible_data_time.iso8601
