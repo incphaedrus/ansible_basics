@@ -1,0 +1,58 @@
+- name: Loops in Ansible Playbook Part I
+  hosts: all
+  become: 'yes'
+  become_user: root
+  # gather_facts: true
+  vars:
+    fruit: "apple"
+    pausetime: 1
+    variable1: |
+      splitting into multiple lines
+      line1
+      line2
+    variable2: >
+      this is a single line
+      no matter what
+    environment:
+      EXAMPLE: development
+
+  tasks:
+    - name: print debug message
+      ansible.builtin.debug:
+        msg: "printing the debug message"
+
+    - name: print some variables too
+      ansible.builtin.debug:
+        msg: "printing new debug with fruit {{ fruit }}"
+        verbosity: 2
+
+    - name: pause for some time
+      ansible.builtin.pause:
+        seconds: "{{ pausetime | int }}"
+
+    - name: print debug message
+      ansible.builtin.debug:
+        msg: "printing the debug message after {{ pausetime }} seconds"
+
+    - name: printing unfolded
+      ansible.builtin.debug:
+        msg: "{{ variable1 }}"
+      tags: tag1
+
+    - name: printing in single line
+      ansible.builtin.debug:
+        msg: "{{ variable2 }}"
+      tags:  tag2
+
+    - name: priting  ansible_host
+      ansible.builtin.debug:
+        msg: "{{ ansible_hostname }}"
+
+    - name: priting the env variable
+      ansible.builtin.command: "echo $EXAMPLE"
+
+
+    - name: printing the env variable
+      ansible.builtin.command: "echo $EXAMPLE"
+      environment:
+        EXAMPLE:  production
