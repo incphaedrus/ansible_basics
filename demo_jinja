@@ -1,0 +1,39 @@
+#!/root/ansible/myansible/bin/uansible-playbook
+---
+- name: command module dome
+  hosts: all
+  vars:
+    reserved_var: " some random"
+
+  tasks:
+    - name:  check uptime
+      ansible.builtin.command: uptime
+      register: std_output
+
+    - name: print the output
+      ansible.builtin.debug:
+        msg: "server uptime is {{ std_output }}"
+
+
+    - name: command output
+      ansible.builtin.debug:
+        var: std_output
+
+    - name:  executin shell
+      ansible.builtin.shell: 'ls -l '
+      register:  std_output2
+
+
+    - name:  show shell output
+      ansible.builtin.debug:
+        var: std_output2
+
+    - name:  write a variable in the file
+      ansible.builtin.copy:
+        content: "{{ reserved_var }}"
+        dest: /tmp/hostname.txt
+
+    - name: write to file using jinja
+      ansible.builtin.template:
+        src: "mytemplate.j2"
+        dest: /tmp/hostname22.txt
